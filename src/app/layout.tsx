@@ -1,12 +1,17 @@
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  title: "Review Generator",
-  description: "Generate Reviews in seconds...",
+export const metadata: Metadata = {
+  title: "Review Base",
+  description:
+    "Generate Reviews in seconds. Our platform lets users effortlessly create authentic and compelling reviews. Whether you need reviews for products, services, books, movies, or any other category. With our advanced AI-powered platform, generating high-quality reviews has never been easier",
+  openGraph: {
+    images: ["/api/og-image"],
+  },
 };
 
 export default function RootLayout({
