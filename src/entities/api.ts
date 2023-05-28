@@ -1,0 +1,20 @@
+export const API_RESPONSE_CODE = {
+  SUCCESS: "SUCCESS",
+  RATE_LIMIT:"RATE_LIMIT",
+  VALIDATION: "VALIDATION",
+  ORDER_FAILED: "ORDER_FAILED",
+  TRANSACTION_FAILED: "TRANSACTION_FAILED",
+  UNAUTHORIZED: "UNAUTHORIZED",
+  INTERNAL_ERROR: "INTERNAL_ERROR",
+  POST_NOT_GENERATED: "POST_NOT_GENERATED",
+} as const;
+
+export type API_RESPONSE_CODE =
+  (typeof API_RESPONSE_CODE)[keyof typeof API_RESPONSE_CODE];
+
+export type TApiResponse<T> = {
+  data: T;
+  success: boolean;
+  code: API_RESPONSE_CODE;
+  message: string;
+};
