@@ -19,7 +19,7 @@ const IconRating: FC<Props> = ({ value = 5 }) => {
   };
 
   return (
-    <div className="flex items-center justify-between w-full">
+    <div className="flex items-center justify-center w-full">
       <Image
         className={twMerge(isAnimating ? "pulsate" : "")}
         alt={`Rating ${value}`}

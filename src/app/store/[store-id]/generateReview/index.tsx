@@ -19,17 +19,17 @@ const GenerateReview = ({
 }: Props) => {
   return (
     <div className="w-full">
-      <div className="w-full flex flex-col justify-between items-center">
+      <div className="w-full min-h-screen">
         <div className="mb-[20px] w-full">
           <StoreHeader store={store} />
         </div>
-        <h1 className="mb-[50px]">The fastest way to write reviews</h1>
-        <div>
+        <h1 className="mb-[50px] text-center">The fastest way to write reviews</h1>
+        <div className="w-full">
           <IconRating value={rating} />
         </div>
       </div>
 
-      <div className="fixed left-0 bottom-0 w-full">
+      <div className="w-full sticky bottom-0">
         <div className="bg-[#1E2023] h-[70px] px-[20px] flex items-center">
           <StarRating
             value={Number(rating)}
