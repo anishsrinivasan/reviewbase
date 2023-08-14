@@ -29,7 +29,7 @@ const GenerateReview = ({
         </div>
       </div>
 
-      <div className="absolute left-0 bottom-0 w-full">
+      <div className="fixed left-0 bottom-0 w-full">
         <div className="bg-[#1E2023] h-[70px] px-[20px] flex items-center">
           <StarRating
             value={Number(rating)}
@@ -37,7 +37,7 @@ const GenerateReview = ({
           />
         </div>
         <div className="bg-[#000000] py-[20px] flex justify-center items-center">
-          <Button className="w-[200px]" onClick={generateReview}>
+          <Button className="shine w-[200px]" onClick={generateReview}>
             Generate Review
           </Button>
         </div>

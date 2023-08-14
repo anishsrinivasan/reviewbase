@@ -123,7 +123,6 @@ const useGenerateReview = () => {
             ...prevReview,
             { review: stringData, reviewRequest },
           ]);
-          scrollToEndSection();
         }
       }
     } catch (err) {

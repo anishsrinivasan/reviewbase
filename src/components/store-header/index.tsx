@@ -12,8 +12,8 @@ const HEADER_SIZES = {
 };
 
 const LOGO_SIZES = {
-  width: 100,
-  height: 100,
+  width: 80,
+  height: 80,
 };
 
 const StoreHeader: FC<Props> = ({ store }) => {
@@ -41,7 +41,7 @@ const StoreHeader: FC<Props> = ({ store }) => {
       </div>
 
       {store.logoImage ? (
-        <div className="mt-[-70px] relative z-50 w-full">
+        <div className="mt-[-50px] relative z-50 w-full">
           <div className="flex justify-center">
             <Image
               className="rounded-full border border-2"
