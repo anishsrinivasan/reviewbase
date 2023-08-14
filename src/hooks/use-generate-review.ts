@@ -10,6 +10,7 @@ import {
   ReconnectInterval,
 } from "eventsource-parser";
 import { useState, useRef } from "react";
+import useCopyToClipboard from "@/hooks/use-copy-to-clipboard";
 
 const FALLBACK_ERROR_TEXT = "Something went wrong! Try Again!";
 
@@ -19,6 +20,7 @@ const useGenerateReview = () => {
   const [reviews, setReviews] = useState<TReview[]>([]);
   const [isLoading, setLoading] = useState(false);
   const endComponent = useRef<HTMLDivElement>(null);
+  const [_, copyToClipboard] = useCopyToClipboard();
 
   const { toast } = useToast();
 
@@ -40,10 +42,23 @@ const useGenerateReview = () => {
     }, delay);
   };
 
+  const handleCopyToClipboard = (text: string) => {
+    copyToClipboard(text);
+    toast({
+      title: "Copied to Clipboard",
+      description: "The Review has been copied successfully..",
+      variant: "default",
+    });
+  };
+
   const generateReview = async (
     reviewRequest: ReviewRequestSchemaType,
     signal?: AbortSignal
   ) => {
+    if (isLoading) {
+      return;
+    }
+
     reset();
     setLoading(true);
     setScreen(REVIEW_SCREENS.GENERATED);
@@ -122,6 +137,7 @@ const useGenerateReview = () => {
     screen,
     goBack,
     generateReview,
+    handleCopyToClipboard,
     bufferText,
     reviews,
     isLoading,

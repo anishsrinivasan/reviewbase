@@ -17,6 +17,7 @@ export default function Page() {
     bufferText,
     goBack,
     endComponent,
+    handleCopyToClipboard,
   } = useGenerateReview();
   const store = SAMPLE_STORE;
 
@@ -44,6 +45,7 @@ export default function Page() {
         bufferText={bufferText}
         generateReview={handleGenerateReview}
         endComponent={endComponent}
+        handleCopyToClipboard={handleCopyToClipboard}
       />
     );
   }

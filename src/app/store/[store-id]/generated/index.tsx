@@ -14,6 +14,7 @@ type Props = {
   reviews: TReview[];
   isLoading: boolean;
   endComponent: any;
+  handleCopyToClipboard: (review: string) => void;
 };
 
 const Generated = ({
@@ -23,13 +24,14 @@ const Generated = ({
   bufferText,
   isLoading,
   reviews,
+  handleCopyToClipboard,
   endComponent,
 }: Props) => {
   return (
     <div className="relative w-full">
       <div className="bg-[#000000] sticky top-0 z-10 w-full">
-        <div className="py-[20px] px-[20px] w-full flex items-center">
-          <div onClick={goBack} className="cursor-pointer">
+        <div className="py-[20px] px-[20px] w-full">
+          <div onClick={goBack} className="cursor-pointer absolute">
             <Back />
           </div>
           <h2 className="text-center text-[20px] font-semibold">
@@ -45,7 +47,13 @@ const Generated = ({
 
       <div className="mb-[200px] min-h-screen">
         {reviews.map((r, idx) => (
-          <ReviewCard showAction review={r.review} key={idx} idx={idx} />
+          <ReviewCard
+            showAction
+            review={r.review}
+            key={idx}
+            idx={idx}
+            onShare={handleCopyToClipboard}
+          />
         ))}
 
         {isLoading ? (

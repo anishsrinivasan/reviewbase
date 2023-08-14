@@ -8,6 +8,15 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/store/biggies-burger',
+        permanent: false,
+      },
+    ]
+  },
 };
 
 module.exports = nextConfig;
