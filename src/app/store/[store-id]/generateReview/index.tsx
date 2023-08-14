@@ -36,9 +36,6 @@ const GenerateReview = ({
             setRating={(rating) => setRating(rating)}
           />
         </div>
-
-        <div className="h-[120px]"></div>
-
         <div className="bg-[#000000] py-[20px] flex justify-center items-center">
           <Button className="w-[200px]" onClick={generateReview}>
             Generate Review
