@@ -8,7 +8,7 @@ import { SampleReviews } from "./data";
 export default function LandingPage() {
   const goToSection = () => {
     const section = document.querySelector("#review-generator-section");
-    section?.scrollIntoView({ behavior: "smooth" });
+    section?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (

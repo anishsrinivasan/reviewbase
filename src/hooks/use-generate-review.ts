@@ -1,30 +1,53 @@
 import { useToast } from "@/components/ui/use-toast";
-import { ReviewRequestSchemaType, TReview } from "@/entities/review";
+import {
+  REVIEW_SCREENS,
+  ReviewRequestSchemaType,
+  TReview,
+} from "@/entities/review";
 import {
   createParser,
   ParsedEvent,
   ReconnectInterval,
 } from "eventsource-parser";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const FALLBACK_ERROR_TEXT = "Something went wrong! Try Again!";
 
-const useGenerateSlide = () => {
+const useGenerateReview = () => {
+  const [screen, setScreen] = useState<REVIEW_SCREENS>(REVIEW_SCREENS.GENERATE);
   const [bufferText, setBufferText] = useState("");
   const [reviews, setReviews] = useState<TReview[]>([]);
   const [isLoading, setLoading] = useState(false);
+  const endComponent = useRef<HTMLDivElement>(null);
+
   const { toast } = useToast();
+
+  const goBack = () => {
+    setScreen(REVIEW_SCREENS.GENERATE);
+  };
 
   const reset = () => {
     setBufferText("");
+    setScreen(REVIEW_SCREENS.GENERATE);
   };
 
-  const generateSlide = async (
+  const scrollToEndSection = (delay: number = 0) => {
+    setTimeout(() => {
+      endComponent?.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }, delay);
+  };
+
+  const generateReview = async (
     reviewRequest: ReviewRequestSchemaType,
     signal?: AbortSignal
   ) => {
     reset();
     setLoading(true);
+    setScreen(REVIEW_SCREENS.GENERATED);
+    scrollToEndSection(1000);
     let stringData = "";
 
     try {
@@ -85,6 +108,7 @@ const useGenerateSlide = () => {
             ...prevReview,
             { review: stringData, reviewRequest },
           ]);
+          scrollToEndSection();
         }
       }
     } catch (err) {
@@ -94,7 +118,15 @@ const useGenerateSlide = () => {
     return { error: null };
   };
 
-  return { generateSlide, bufferText, reviews, isLoading };
+  return {
+    screen,
+    goBack,
+    generateReview,
+    bufferText,
+    reviews,
+    isLoading,
+    endComponent,
+  };
 };
 
-export default useGenerateSlide;
+export default useGenerateReview;

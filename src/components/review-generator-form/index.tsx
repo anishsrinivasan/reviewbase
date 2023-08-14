@@ -26,7 +26,7 @@ import { Button } from "@/components/ui/button";
 import MultiSelectChips from "../ui/multi-select-chips";
 import { useEffect, useRef, useState } from "react";
 import { reviewRequestSchema } from "@/entities/review";
-import useGenerateSlide from "@/hooks/use-generate-review";
+import usegenerateReview from "@/hooks/use-generate-review";
 import useCopyToClipboard from "@/hooks/use-copy-to-clipboard";
 import ReviewCard from "../review-card";
 import { feelBasedOnRating, platforms } from "./data";
@@ -39,14 +39,15 @@ const ReviewGeneratorForm = () => {
       name: "",
       type: "",
       location: "",
-      rating: "5",
+      rating: 5,
       feel: [],
     },
   });
 
   const [feel, setFeel] = useState<string[]>([]);
 
-  const { bufferText, reviews, isLoading, generateSlide } = useGenerateSlide();
+  const { bufferText, reviews, isLoading, generateReview } =
+    usegenerateReview();
   const [_, copyToClipboard] = useCopyToClipboard();
   const { toast } = useToast();
   const endComponent = useRef<HTMLDivElement>(null);
@@ -54,7 +55,7 @@ const ReviewGeneratorForm = () => {
   const onSubmit = async (values: z.infer<typeof reviewRequestSchema>) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    generateSlide(values);
+    generateReview(values);
     await delay(1500);
     endComponent?.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -69,7 +70,7 @@ const ReviewGeneratorForm = () => {
   };
 
   const formItemCN = "w-full";
-  const rating = form.watch("rating") as string;
+  const rating = form.watch("rating") as number;
 
   useEffect(() => {
     form.setValue("feel", []);
@@ -163,10 +164,7 @@ const ReviewGeneratorForm = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Rating</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
+                      <Select onValueChange={field.onChange}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select a rating between 1 to 5" />
