@@ -13,7 +13,7 @@ const StarIcon: FC<Props> = ({ selected }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={twMerge(
-        "cursor-pointer",
+        "cursor-pointer w-[26px] md:w-[34px]",
         selected ? "fill-[#FFBC57]" : "fill-[#D9D9D9]"
       )}
     >

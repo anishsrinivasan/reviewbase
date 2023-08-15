@@ -21,11 +21,12 @@ const useGenerateReview = () => {
   const [isLoading, setLoading] = useState(false);
   const endComponent = useRef<HTMLDivElement>(null);
   const [_, copyToClipboard] = useCopyToClipboard();
+  const [selectedReview, setSelectedReview] = useState<TReview>();
 
   const { toast } = useToast();
 
-  const goBack = () => {
-    setScreen(REVIEW_SCREENS.GENERATE);
+  const goBack = (screen: REVIEW_SCREENS = REVIEW_SCREENS.GENERATE) => {
+    setScreen(screen);
   };
 
   const reset = () => {
@@ -42,11 +43,17 @@ const useGenerateReview = () => {
     }, delay);
   };
 
+  const selectReview = (review: TReview) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setSelectedReview(review);
+    handleCopyToClipboard(review.review);
+    setScreen(REVIEW_SCREENS.SHARE);
+  };
+
   const handleCopyToClipboard = (text: string) => {
     copyToClipboard(text);
     toast({
-      title: "Copied to Clipboard",
-      description: "The Review has been copied successfully..",
+      description: "The Review has been copied to clipboard.",
       variant: "default",
     });
   };
@@ -137,6 +144,8 @@ const useGenerateReview = () => {
     goBack,
     generateReview,
     handleCopyToClipboard,
+    selectReview,
+    selectedReview,
     bufferText,
     reviews,
     isLoading,

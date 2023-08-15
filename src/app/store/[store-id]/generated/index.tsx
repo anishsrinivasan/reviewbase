@@ -14,6 +14,7 @@ type Props = {
   reviews: TReview[];
   isLoading: boolean;
   endComponent: any;
+  selectReview: (review: TReview) => void;
   handleCopyToClipboard: (review: string) => void;
 };
 
@@ -24,7 +25,7 @@ const Generated = ({
   bufferText,
   isLoading,
   reviews,
-  handleCopyToClipboard,
+  selectReview,
   endComponent,
 }: Props) => {
   return (
@@ -52,7 +53,7 @@ const Generated = ({
             review={r.review}
             key={idx}
             idx={idx}
-            onShare={handleCopyToClipboard}
+            onShare={() => selectReview(r)}
           />
         ))}
 

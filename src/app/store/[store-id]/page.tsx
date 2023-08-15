@@ -6,6 +6,7 @@ import Generated from "./generated";
 
 import useGenerateReview from "@/hooks/use-generate-review";
 import { REVIEW_SCREENS, ReviewRequestSchemaType } from "@/entities/review";
+import Share from "./share";
 
 export default function Page() {
   const [rating, setRating] = useState(5);
@@ -17,8 +18,11 @@ export default function Page() {
     bufferText,
     goBack,
     endComponent,
+    selectReview,
+    selectedReview,
     handleCopyToClipboard,
   } = useGenerateReview();
+
   const store = SAMPLE_STORE;
 
   const handleGenerateReview = () => {
@@ -31,8 +35,19 @@ export default function Page() {
     };
 
     generateReview(payload);
-    console.log(payload);
   };
+
+  if (screen === REVIEW_SCREENS.SHARE) {
+    return (
+      <Share
+        goBack={goBack}
+        store={store}
+        rating={rating}
+        selectedReview={selectedReview}
+        handleCopyToClipboard={handleCopyToClipboard}
+      />
+    );
+  }
 
   if (screen === REVIEW_SCREENS.GENERATED) {
     return (
@@ -45,6 +60,7 @@ export default function Page() {
         bufferText={bufferText}
         generateReview={handleGenerateReview}
         endComponent={endComponent}
+        selectReview={selectReview}
         handleCopyToClipboard={handleCopyToClipboard}
       />
     );
