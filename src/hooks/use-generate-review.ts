@@ -1,30 +1,95 @@
+"use client";
+
 import { useToast } from "@/components/ui/use-toast";
-import { ReviewRequestSchemaType, TReview } from "@/entities/review";
+import {
+  REVIEW_SCREENS,
+  ReviewRequestSchemaType,
+  TReview,
+} from "@/entities/review";
 import {
   createParser,
   ParsedEvent,
   ReconnectInterval,
 } from "eventsource-parser";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import useCopyToClipboard from "@/hooks/use-copy-to-clipboard";
 
 const FALLBACK_ERROR_TEXT = "Something went wrong! Try Again!";
 
-const useGenerateSlide = () => {
+const useGenerateReview = () => {
+  const [screen, setScreen] = useState<REVIEW_SCREENS>(REVIEW_SCREENS.GENERATE);
   const [bufferText, setBufferText] = useState("");
   const [reviews, setReviews] = useState<TReview[]>([]);
   const [isLoading, setLoading] = useState(false);
+  const endComponent = useRef<HTMLDivElement>(null);
+  const [_, copyToClipboard] = useCopyToClipboard();
+  const [selectedReview, setSelectedReview] = useState<TReview>();
+  const [rating, setRating] = useState(5);
+
   const { toast } = useToast();
 
-  const reset = () => {
-    setBufferText("");
+  const updateReview = (reviewIdx: number, review: string) => {
+    const newReviews = reviews.map((reviewObj, idx) => {
+      if (idx === reviewIdx) {
+        return { ...reviewObj, review };
+      }
+      return reviewObj;
+    });
+    setReviews(newReviews);
+    toast({
+      description: "The Review has been updated.",
+      variant: "default",
+    });
   };
 
-  const generateSlide = async (
+  const goBack = (screen: REVIEW_SCREENS = REVIEW_SCREENS.GENERATE) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setScreen(screen);
+  };
+
+  // TODO : Fix Reset
+  const reset = () => {
+    setBufferText("");
+    setScreen(REVIEW_SCREENS.GENERATE);
+    setReviews([]);
+  };
+
+  const scrollToEndSection = (delay: number = 0) => {
+    setTimeout(() => {
+      endComponent?.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }, delay);
+  };
+
+  const selectReview = (review: TReview) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setSelectedReview(review);
+    handleCopyToClipboard(review.review);
+    setScreen(REVIEW_SCREENS.SHARE);
+  };
+
+  const handleCopyToClipboard = (text: string) => {
+    copyToClipboard(text);
+    toast({
+      description: "The Review has been copied to clipboard.",
+      variant: "default",
+    });
+  };
+
+  const generateReview = async (
     reviewRequest: ReviewRequestSchemaType,
     signal?: AbortSignal
   ) => {
-    reset();
+    if (isLoading) {
+      return;
+    }
+
+    setBufferText("");
     setLoading(true);
+    setScreen(REVIEW_SCREENS.GENERATED);
+    scrollToEndSection(1000);
     let stringData = "";
 
     try {
@@ -94,7 +159,21 @@ const useGenerateSlide = () => {
     return { error: null };
   };
 
-  return { generateSlide, bufferText, reviews, isLoading };
+  return {
+    screen,
+    goBack,
+    generateReview,
+    handleCopyToClipboard,
+    selectReview,
+    updateReview,
+    rating,
+    setRating,
+    selectedReview,
+    bufferText,
+    reviews,
+    isLoading,
+    endComponent,
+  };
 };
 
-export default useGenerateSlide;
+export default useGenerateReview;

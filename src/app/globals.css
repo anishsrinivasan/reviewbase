@@ -34,8 +34,8 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
 
-    --primary: 0 0% 100%;
-    --primary-foreground: 0 0% 10%;
+    --primary: 216 7.7% 12.7%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -67,8 +67,8 @@
     --border: 216 34% 17%;
     --input: 216 34% 17%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 1.2%;
+    --primary: 216 7.7% 12.7%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 222.2 47.4% 11.2%;
     --secondary-foreground: 210 40% 98%;
@@ -111,4 +111,59 @@
 
 .bg-review-section {
   background-color: #000000;
+}
+
+.shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine:before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 20px;
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: skewX(-15deg);
+  opacity: 0.6;
+  filter: blur(5px);
+  left: -10%;
+  top: 1px;
+  animation: shineAnimation 1.8s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+}
+
+@keyframes shineAnimation {
+  0% {
+    opacity: 0.6;
+    left: -10%;
+  }
+
+  66% {
+    opacity: 1;
+    left: 100%;
+  }
+
+  100% {
+    opacity: 1;
+    left: 100%;
+  }
+}
+
+.pulsate {
+  animation: pulsate 1s;
+}
+
+@keyframes pulsate {
+  0% {
+    transform: scale(0.7);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

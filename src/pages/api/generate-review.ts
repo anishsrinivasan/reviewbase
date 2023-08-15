@@ -21,6 +21,7 @@ export default async function handler(req: Request) {
       message: "Something went wrong, try later.",
       statusCode: 400,
       code: API_RESPONSE_CODE.VALIDATION,
+      data: validator.error,
     });
   }
 
