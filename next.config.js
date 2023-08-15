@@ -12,7 +12,7 @@ const nextConfig = {
     return [
       {
         source: "/",
-        destination: "/store/mcdonalds-anna-nagar-92029",
+        destination: "/store/caa21bd8-c82a-46a3-8639-4b55f134f4c5",
         permanent: false,
       },
     ];

@@ -1,3 +1,5 @@
+"use client";
+
 import { useToast } from "@/components/ui/use-toast";
 import {
   REVIEW_SCREENS,
@@ -22,6 +24,7 @@ const useGenerateReview = () => {
   const endComponent = useRef<HTMLDivElement>(null);
   const [_, copyToClipboard] = useCopyToClipboard();
   const [selectedReview, setSelectedReview] = useState<TReview>();
+  const [rating, setRating] = useState(5);
 
   const { toast } = useToast();
 
@@ -163,6 +166,8 @@ const useGenerateReview = () => {
     handleCopyToClipboard,
     selectReview,
     updateReview,
+    rating,
+    setRating,
     selectedReview,
     bufferText,
     reviews,

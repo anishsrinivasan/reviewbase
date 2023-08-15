@@ -1,3 +1,4 @@
+"use client";
 import StarRating from "@/components/star-rating";
 import { Button } from "@/components/ui/button";
 import { Store } from "@/entities/store";
@@ -6,7 +7,7 @@ import { TReview } from "@/entities/review";
 import Back from "@/components/icon/back";
 import EditReview from "./editReview";
 import { useState } from "react";
-import { ReloadIcon, ArrowLeftIcon } from "@radix-ui/react-icons";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 type Props = {
   store: Store;

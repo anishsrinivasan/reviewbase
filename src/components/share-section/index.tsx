@@ -1,31 +1,29 @@
 import { FC } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/image";
-import { Store, StoreIds, StorePlatforms } from "@/entities/store";
+import { Store, Platforms } from "@/entities/store";
 import Link from "next/link";
 
 type Props = {
   store: Store;
 };
 
-const getPlatformURL = (storePlatform: StorePlatforms, storeIds: StoreIds) => {
-  const storeId = storeIds[storePlatform];
-  if (storePlatform === StorePlatforms.Zomato) {
-    return `http://zoma.to/r/${storeId}`;
+const getPlatformURL = (platform: Platforms, value: string) => {
+  if (platform === Platforms.Zomato) {
+    return `http://zoma.to/r/${value}`;
   }
 
-  if (storePlatform === StorePlatforms.Google) {
-    return `https://search.google.com/local/writereview?placeid=${storeId}`;
+  if (platform === Platforms.Google) {
+    return `https://search.google.com/local/writereview?placeid=${value}`;
   }
 
   return ``;
 };
 
 const ShareSection: FC<Props> = ({ store }) => {
-  const storeIds = store?.storeIds;
-  const sharePlatforms = Object.keys(storeIds);
+  const sharePlatforms = store.storePlatform;
 
-  if (!storeIds || sharePlatforms.length < 1) {
+  if (sharePlatforms.length < 1) {
     return <></>;
   }
 
@@ -33,11 +31,8 @@ const ShareSection: FC<Props> = ({ store }) => {
     <div className="bg-[#000000] py-[10px]">
       <div className="flex justify-center items-center">
         {sharePlatforms.map((share, idx) => {
-          const platformImage = `/icons/${share}.png`;
-          const shareLink = getPlatformURL(
-            share as StorePlatforms,
-            storeIds as StoreIds
-          );
+          const platformImage = `/icons/${share.platform}.png`;
+          const shareLink = getPlatformURL(share.platform, share.value);
 
           if (!shareLink) {
             return <></>;
@@ -52,7 +47,7 @@ const ShareSection: FC<Props> = ({ store }) => {
               >
                 <Image
                   className="w-[30px] h-[30px] md:w-[40px] md:h-[40px]"
-                  alt={share}
+                  alt={share.platform}
                   width={40}
                   height={40}
                   src={platformImage}

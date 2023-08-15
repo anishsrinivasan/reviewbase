@@ -63,8 +63,7 @@ const Share = ({
             <p className="text-center text-[14px] md:text-[18px] mb-[20px]">
               Your Review has been copied to clipboard.
               <br />
-              Please use the below links to post your review to the {`store's`}{" "}
-              page.
+              Please post your review to the {`store's`} social platforms.
             </p>
           </div>
 

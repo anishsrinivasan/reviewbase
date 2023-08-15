@@ -1,16 +1,21 @@
 "use client";
-import { useState } from "react";
-import { SAMPLE_STORE } from "./data";
 import GenerateReview from "./generateReview";
 import Generated from "./generated";
 
 import useGenerateReview from "@/hooks/use-generate-review";
 import { REVIEW_SCREENS, ReviewRequestSchemaType } from "@/entities/review";
 import Share from "./share";
+import { Store } from "@/entities/store";
+import { FC } from "react";
 
-export default function Page() {
-  const [rating, setRating] = useState(5);
+type Props = {
+  store: Store;
+};
+
+const StoreView: FC<Props> = ({ store }) => {
   const {
+    rating,
+    setRating,
     isLoading,
     screen,
     generateReview,
@@ -24,14 +29,12 @@ export default function Page() {
     updateReview,
   } = useGenerateReview();
 
-  const store = SAMPLE_STORE;
-
   const handleGenerateReview = () => {
     const payload: ReviewRequestSchemaType = {
       name: store.name,
       platform: "Google Reviews",
       location: `${store.city}, ${store.country}`,
-      type: "Food Chain",
+      type: store.type.name,
       rating: rating,
     };
 
@@ -76,4 +79,6 @@ export default function Page() {
       generateReview={handleGenerateReview}
     />
   );
-}
+};
+
+export default StoreView;
