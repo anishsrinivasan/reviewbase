@@ -19,9 +19,9 @@ export type StoreType = {
 export type Store = {
   name: string;
   description?: string;
-  address: string;
-  city: string;
-  country: string;
+  address?: string;
+  city?: string;
+  country?: string;
   type: StoreType;
   headerImage?: string;
   logoImage?: string;

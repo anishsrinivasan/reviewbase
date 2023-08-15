@@ -3,6 +3,7 @@ import { Store } from "@/entities/store";
 export const SAMPLE_STORE: Store = {
   name: "McDonald's",
   description: "",
+  address: "",
   city: "Chennai",
   country: "India",
   headerImage:
