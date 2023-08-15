@@ -44,16 +44,22 @@ const EditReview: FC<Props> = ({ isOpen, review, updateReview, onClose }) => {
           ref={inputRef}
           placeholder="Write your review"
           defaultValue={review?.review}
-          autoFocus
           rows={10}
         />
         <DialogFooter>
-          <Button onClick={onClose} variant={"destructive"} type="submit">
-            Discard
-          </Button>
-          <Button onClick={handleSave} type="submit">
-            Save
-          </Button>
+          <div className="flex justify-end">
+            <Button
+              className="mr-4"
+              onClick={onClose}
+              variant={"destructive"}
+              type="submit"
+            >
+              Discard
+            </Button>
+            <Button onClick={handleSave} type="submit">
+              Save
+            </Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
