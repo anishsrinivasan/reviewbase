@@ -11,7 +11,7 @@ export const getStoreUsingId = cache(async (id: string) => {
   const { error, data } = await supabase
     .from("store")
     .select(
-      "name, description, city, country, headerImage, logoImage, storePlatform(platform, value), type:storeType(name)"
+      "name, description, address, city, country, headerImage, logoImage, storePlatform(platform, value), type:storeType(name)"
     )
     .eq("id", id)
     .single();

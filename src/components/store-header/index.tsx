@@ -44,7 +44,7 @@ const StoreHeader: FC<Props> = ({ store }) => {
         <div className="mt-[-50px] relative z-50 w-full">
           <div className="flex justify-center">
             <Image
-              className="rounded-full border border-2"
+              className="rounded-full w-[80px] h-[80px] border-2"
               alt={store.name}
               src={store.logoImage}
               width={LOGO_SIZES.width}

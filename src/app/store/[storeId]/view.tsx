@@ -33,7 +33,9 @@ const StoreView: FC<Props> = ({ store }) => {
     const payload: ReviewRequestSchemaType = {
       name: store.name,
       platform: "Google Reviews",
-      location: `${store.city}, ${store.country}`,
+      location: `${store.address ? store.address : ""} ${store.city}, ${
+        store.country
+      }`,
       type: store.type.name,
       rating: rating,
     };
