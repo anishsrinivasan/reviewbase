@@ -1,7 +1,7 @@
 import { Store } from "@/entities/store";
 
 export const SAMPLE_STORE: Store = {
-  name: "Biggies Burger",
+  name: "McDonald's",
   description: "",
   city: "Chennai",
   country: "India",
