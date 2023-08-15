@@ -25,13 +25,30 @@ const useGenerateReview = () => {
 
   const { toast } = useToast();
 
+  const updateReview = (reviewIdx: number, review: string) => {
+    const newReviews = reviews.map((reviewObj, idx) => {
+      if (idx === reviewIdx) {
+        return { ...reviewObj, review };
+      }
+      return reviewObj;
+    });
+    setReviews(newReviews);
+    toast({
+      description: "The Review has been updated.",
+      variant: "default",
+    });
+  };
+
   const goBack = (screen: REVIEW_SCREENS = REVIEW_SCREENS.GENERATE) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setScreen(screen);
   };
 
+  // TODO : Fix Reset
   const reset = () => {
     setBufferText("");
     setScreen(REVIEW_SCREENS.GENERATE);
+    setReviews([]);
   };
 
   const scrollToEndSection = (delay: number = 0) => {
@@ -66,7 +83,7 @@ const useGenerateReview = () => {
       return;
     }
 
-    reset();
+    setBufferText("");
     setLoading(true);
     setScreen(REVIEW_SCREENS.GENERATED);
     scrollToEndSection(1000);
@@ -145,6 +162,7 @@ const useGenerateReview = () => {
     generateReview,
     handleCopyToClipboard,
     selectReview,
+    updateReview,
     selectedReview,
     bufferText,
     reviews,

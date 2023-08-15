@@ -21,7 +21,7 @@ const Share = ({
   goBack,
   handleCopyToClipboard,
 }: Props) => {
-  const copyLink = () => {
+  const copyReview = () => {
     if (!selectedReview) {
       return;
     }
@@ -69,7 +69,7 @@ const Share = ({
           </div>
 
           <div className="flex flex-col items-center justify-center">
-            <Button onClick={copyLink}>Copy Link</Button>
+            <Button onClick={copyReview}>Copy Review</Button>
           </div>
         </div>
       </div>

@@ -21,6 +21,7 @@ export default function Page() {
     selectReview,
     selectedReview,
     handleCopyToClipboard,
+    updateReview,
   } = useGenerateReview();
 
   const store = SAMPLE_STORE;
@@ -62,6 +63,7 @@ export default function Page() {
         endComponent={endComponent}
         selectReview={selectReview}
         handleCopyToClipboard={handleCopyToClipboard}
+        updateReview={updateReview}
       />
     );
   }
