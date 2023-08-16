@@ -85,7 +85,7 @@ const addAdditionalQualities = (rating: number) => {
 export const ApolloDentalPrompt = (requestReview: ReviewRequestSchemaType) => {
   return `Write a Google Reviews review for ${requestReview.name} in ${
     requestReview.location
-  }, for the service of dental filling
+  },
 
     Follow the below rules:
     Start the review with the word starting with ${getRandomAlphabetExceptX()}
