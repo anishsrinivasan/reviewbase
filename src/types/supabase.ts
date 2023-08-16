@@ -9,6 +9,52 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      customField: {
+        Row: {
+          createdAt: string
+          id: number
+          isRequired: boolean
+          label: string | null
+          name: string
+          pattern: string | null
+          placeholder: string | null
+          promptText: string | null
+          storeId: string
+          type: string
+        }
+        Insert: {
+          createdAt?: string
+          id?: number
+          isRequired?: boolean
+          label?: string | null
+          name?: string
+          pattern?: string | null
+          placeholder?: string | null
+          promptText?: string | null
+          storeId: string
+          type?: string
+        }
+        Update: {
+          createdAt?: string
+          id?: number
+          isRequired?: boolean
+          label?: string | null
+          name?: string
+          pattern?: string | null
+          placeholder?: string | null
+          promptText?: string | null
+          storeId?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customField_storeId_fkey"
+            columns: ["storeId"]
+            referencedRelation: "store"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       store: {
         Row: {
           address: string | null
@@ -106,7 +152,10 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_friendly_uuid: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

@@ -1,18 +1,21 @@
 "use client";
+
+import { FC } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import GenerateReview from "./generateReview";
 import Generated from "./generated";
-
 import useGenerateReview from "@/hooks/use-generate-review";
-import { REVIEW_SCREENS, ReviewRequestSchemaType } from "@/entities/review";
+import { REVIEW_SCREENS } from "@/entities/review";
 import Share from "./share";
 import { Store } from "@/entities/store";
-import { FC } from "react";
 
 type Props = {
   store: Store;
 };
 
 const StoreView: FC<Props> = ({ store }) => {
+  const customFieldForm = useForm({ defaultValues: {} });
+
   const {
     rating,
     setRating,
@@ -28,31 +31,14 @@ const StoreView: FC<Props> = ({ store }) => {
     selectedReview,
     handleCopyToClipboard,
     updateReview,
-  } = useGenerateReview();
-
-  const getPayload = () => {
-    const payload: ReviewRequestSchemaType = {
-      name: store.name,
-      platform: "Google Reviews",
-      location: `${store.address ? store.address : ""} ${store.city}, ${
-        store.country
-      }`,
-      type: store.type.name,
-      rating: rating,
-      storeId: store.id,
-    };
-
-    return payload;
-  };
+  } = useGenerateReview({ store, customFieldForm });
 
   const initFirstCall = () => {
-    const payload = getPayload();
-    initiateGenerateReview(payload);
+    initiateGenerateReview();
   };
 
   const handleGenerateReview = () => {
-    const payload = getPayload();
-    generateReview(payload);
+    generateReview();
   };
 
   if (screen === REVIEW_SCREENS.SHARE) {
@@ -86,12 +72,14 @@ const StoreView: FC<Props> = ({ store }) => {
   }
 
   return (
-    <GenerateReview
-      store={store}
-      rating={rating}
-      setRating={setRating}
-      generateReview={initFirstCall}
-    />
+    <FormProvider {...customFieldForm}>
+      <GenerateReview
+        store={store}
+        rating={rating}
+        setRating={setRating}
+        generateReview={initFirstCall}
+      />
+    </FormProvider>
   );
 };
 

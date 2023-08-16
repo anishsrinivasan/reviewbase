@@ -2,6 +2,7 @@ import { ReviewRequestSchemaType } from "@/entities/review";
 import { OpenAIStream, OpenAIStreamPayload } from "./openai-stream";
 import { ApolloDentalPrompt } from "./prompts";
 import { getRandomAlphabetExceptX } from "@/lib/characters";
+import { generateCustomField } from "./prompts/customField";
 
 export const generateStreamUsingPrompt = async (
   requestReview: ReviewRequestSchemaType
@@ -45,6 +46,8 @@ const getTextNewPrompt = (requestReview: ReviewRequestSchemaType) => {
 
   Follow the below rules:
   Start the review with the word starting with ${getRandomAlphabetExceptX()}
+
+  ${generateCustomField(requestReview)}
 
   Keep it simple, precise
     Make sure the review is simple select a length of 50 words

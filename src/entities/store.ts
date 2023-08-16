@@ -16,6 +16,16 @@ export type StoreType = {
   name: string;
 };
 
+export type CustomField = {
+  name: string;
+  placeholder: string;
+  type: string;
+  promptText: string;
+  isRequired: boolean;
+  label?: string;
+  pattern?: string;
+};
+
 export type Store = {
   id: string;
   name: string;
@@ -27,4 +37,5 @@ export type Store = {
   headerImage?: string;
   logoImage?: string;
   storePlatform: StorePlatform[];
+  customField?: CustomField[];
 };

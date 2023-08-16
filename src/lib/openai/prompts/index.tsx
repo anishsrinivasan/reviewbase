@@ -1,5 +1,6 @@
 import { ReviewRequestSchemaType } from "@/entities/review";
 import { getRandomAlphabetExceptX } from "@/lib/characters";
+import { generateCustomField } from "@/lib/openai/prompts/customField";
 
 const addAdditionalQualities = (rating: number) => {
   if (rating < 3) {
@@ -85,7 +86,8 @@ const addAdditionalQualities = (rating: number) => {
 export const ApolloDentalPrompt = (requestReview: ReviewRequestSchemaType) => {
   return `Write a Google Reviews review for ${requestReview.name} in ${
     requestReview.location
-  },
+  },${generateCustomField(requestReview)}
+
 
     Follow the below rules:
     Start the review with the word starting with ${getRandomAlphabetExceptX()}

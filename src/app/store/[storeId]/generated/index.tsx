@@ -60,7 +60,7 @@ const Generated = ({
       <div className="relative w-full">
         <div className="bg-[#000000] sticky top-0 z-10 w-full">
           <div className="py-[20px] px-[20px] w-full">
-            <div onClick={goBack} className="cursor-pointer absolute">
+            <div onClick={() => goBack()} className="cursor-pointer absolute">
               <Back />
             </div>
             <h2 className="text-center text-[20px] font-semibold">

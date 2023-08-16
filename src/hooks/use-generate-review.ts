@@ -13,10 +13,18 @@ import {
 } from "eventsource-parser";
 import { useState, useRef } from "react";
 import useCopyToClipboard from "@/hooks/use-copy-to-clipboard";
+import { Store } from "@/entities/store";
+import { UseFormReturn } from "react-hook-form";
 
 const FALLBACK_ERROR_TEXT = "Something went wrong! Try Again!";
 
-const useGenerateReview = () => {
+const useGenerateReview = ({
+  store,
+  customFieldForm,
+}: {
+  store: Store;
+  customFieldForm: UseFormReturn;
+}) => {
   const [screen, setScreen] = useState<REVIEW_SCREENS>(REVIEW_SCREENS.GENERATE);
   const [bufferText, setBufferText] = useState("");
   const [reviews, setReviews] = useState<TReview[]>([]);
@@ -43,6 +51,11 @@ const useGenerateReview = () => {
 
   const goBack = (screen: REVIEW_SCREENS = REVIEW_SCREENS.GENERATE) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    console.log("Screen", { screen });
+    if (screen === REVIEW_SCREENS.GENERATE) {
+      setReviews([]);
+      console.log("clearing reviews");
+    }
     setScreen(screen);
   };
 
@@ -77,23 +90,61 @@ const useGenerateReview = () => {
     });
   };
 
-  const initiateGenerateReview = async (
-    reviewRequest: ReviewRequestSchemaType
-  ) => {
+  const initiateGenerateReview = async () => {
     for (let i = 0; i < 3; i++) {
-      await generateReview(reviewRequest);
+      await generateReview();
     }
   };
 
-  const generateReview = async (
-    reviewRequest: ReviewRequestSchemaType,
-    signal?: AbortSignal
-  ) => {
+  const getPayload = () => {
+    const customFieldValues = customFieldForm.getValues();
+    const customField = store.customField?.map((x) => ({
+      ...x,
+      value: customFieldValues[x.name],
+    }));
+
+    const payload: ReviewRequestSchemaType = {
+      name: store.name,
+      platform: "Google Reviews",
+      location: `${store.address ? store.address : ""} ${store.city}, ${
+        store.country
+      }`,
+      type: store.type.name,
+      rating: rating,
+      storeId: store.id,
+      customField: customField,
+    };
+
+    return payload;
+  };
+
+  const checkIfFormValid = () => {
+    return new Promise((resolve) => {
+      customFieldForm.handleSubmit(
+        (data) => {
+          console.log("checkIfFormValid", data);
+          resolve(true);
+        },
+        (error) => {
+          console.error("checkIfFormValid", error);
+          resolve(false);
+        }
+      )();
+    });
+  };
+
+  const generateReview = async (signal?: AbortSignal) => {
     return new Promise(async (resolve) => {
       if (isLoading) {
         return;
       }
 
+      const isFormValid = await checkIfFormValid();
+      if (!isFormValid) {
+        return;
+      }
+
+      const reviewRequest = getPayload();
       setBufferText("");
       setLoading(true);
       setScreen(REVIEW_SCREENS.GENERATED);

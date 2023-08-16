@@ -6,11 +6,6 @@ type Props = {
   store: Store;
 };
 
-const HEADER_SIZES = {
-  width: "100%",
-  height: 160,
-};
-
 const LOGO_SIZES = {
   width: 80,
   height: 80,
@@ -19,13 +14,7 @@ const LOGO_SIZES = {
 const StoreHeader: FC<Props> = ({ store }) => {
   return (
     <div className="relative w-full">
-      <div
-        className="relative"
-        style={{
-          height: HEADER_SIZES.height,
-          width: HEADER_SIZES.width,
-        }}
-      >
+      <div className="relative min-h-[130px] md:min-h-[160px]">
         <div
           className="absolute inset-0 z-10"
           style={{ background: "rgb(0 0 0 / 50%)" }}
