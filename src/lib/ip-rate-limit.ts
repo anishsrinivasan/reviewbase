@@ -9,7 +9,7 @@ export default function getIP(request: Request) {
 export const ipRateLimit = initRateLimit((request) => ({
   id: `ip:${getIP(request)}`,
   count: increment,
-  limit: 5,
+  limit: 10,
   timeframe: 60, // Seconds
 }));
 

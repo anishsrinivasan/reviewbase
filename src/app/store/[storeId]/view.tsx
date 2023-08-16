@@ -18,18 +18,19 @@ const StoreView: FC<Props> = ({ store }) => {
     setRating,
     isLoading,
     screen,
-    generateReview,
+    initiateGenerateReview,
     reviews,
     bufferText,
     goBack,
     endComponent,
+    generateReview,
     selectReview,
     selectedReview,
     handleCopyToClipboard,
     updateReview,
   } = useGenerateReview();
 
-  const handleGenerateReview = () => {
+  const getPayload = () => {
     const payload: ReviewRequestSchemaType = {
       name: store.name,
       platform: "Google Reviews",
@@ -41,6 +42,16 @@ const StoreView: FC<Props> = ({ store }) => {
       storeId: store.id,
     };
 
+    return payload;
+  };
+
+  const initFirstCall = () => {
+    const payload = getPayload();
+    initiateGenerateReview(payload);
+  };
+
+  const handleGenerateReview = () => {
+    const payload = getPayload();
     generateReview(payload);
   };
 
@@ -79,7 +90,7 @@ const StoreView: FC<Props> = ({ store }) => {
       store={store}
       rating={rating}
       setRating={setRating}
-      generateReview={handleGenerateReview}
+      generateReview={initFirstCall}
     />
   );
 };

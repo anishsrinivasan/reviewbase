@@ -25,7 +25,6 @@ const useGenerateReview = () => {
   const [_, copyToClipboard] = useCopyToClipboard();
   const [selectedReview, setSelectedReview] = useState<TReview>();
   const [rating, setRating] = useState(5);
-
   const { toast } = useToast();
 
   const updateReview = (reviewIdx: number, review: string) => {
@@ -78,91 +77,104 @@ const useGenerateReview = () => {
     });
   };
 
+  const initiateGenerateReview = async (
+    reviewRequest: ReviewRequestSchemaType
+  ) => {
+    for (let i = 0; i < 3; i++) {
+      await generateReview(reviewRequest);
+    }
+  };
+
   const generateReview = async (
     reviewRequest: ReviewRequestSchemaType,
     signal?: AbortSignal
   ) => {
-    if (isLoading) {
-      return;
-    }
+    return new Promise(async (resolve) => {
+      if (isLoading) {
+        return;
+      }
 
-    setBufferText("");
-    setLoading(true);
-    setScreen(REVIEW_SCREENS.GENERATED);
-    scrollToEndSection(1000);
-    let stringData = "";
+      setBufferText("");
+      setLoading(true);
+      setScreen(REVIEW_SCREENS.GENERATED);
+      scrollToEndSection(1000);
+      let stringData = "";
 
-    try {
-      const response = await fetch(`/api/generate-review`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...reviewRequest }),
-        signal,
-      });
-
-      if (!response.ok) {
-        setLoading(false);
-        const resData = await response.json();
-        console.log(response.body, resData);
-        toast({
-          description: resData?.message || FALLBACK_ERROR_TEXT,
-          variant: "destructive",
+      try {
+        const response = await fetch(`/api/generate-review`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...reviewRequest }),
+          signal,
         });
-        return { error: FALLBACK_ERROR_TEXT };
-      }
 
-      // This data is a ReadableStream
-      const data = response.body;
-      if (!data) {
-        setLoading(false);
-        return { error: FALLBACK_ERROR_TEXT };
-      }
+        if (!response.ok) {
+          setLoading(false);
+          const resData = await response.json();
+          console.log(response.body, resData);
+          toast({
+            description: resData?.message || FALLBACK_ERROR_TEXT,
+            variant: "destructive",
+          });
+          return { error: FALLBACK_ERROR_TEXT };
+        }
 
-      const onParse = (event: ParsedEvent | ReconnectInterval) => {
-        if (event.type === "event") {
-          const data = event.data;
-          try {
-            const text = JSON.parse(data).text ?? "";
-            stringData += text;
-            setBufferText(stringData);
-          } catch (e) {
-            console.error(e);
+        // This data is a ReadableStream
+        const data = response.body;
+        if (!data) {
+          setLoading(false);
+          return { error: FALLBACK_ERROR_TEXT };
+        }
+
+        const onParse = (event: ParsedEvent | ReconnectInterval) => {
+          if (event.type === "event") {
+            const data = event.data;
+            try {
+              const text = JSON.parse(data).text ?? "";
+              stringData += text;
+              setBufferText(stringData);
+            } catch (e) {
+              console.error(e);
+            }
+          }
+        };
+
+        // https://web.dev/streams/#the-getreader-and-read-methods
+        const reader = data.getReader();
+        const decoder = new TextDecoder();
+        const parser = createParser(onParse);
+        let done = false;
+        while (!done) {
+          const { value, done: doneReading } = await reader.read();
+          done = doneReading;
+          const chunkValue = decoder.decode(value);
+          parser.feed(chunkValue);
+
+          if (done) {
+            setLoading(false);
+            setReviews((prevReview) => [
+              ...prevReview,
+              { review: stringData, reviewRequest },
+            ]);
+
+            resolve("");
           }
         }
-      };
-
-      // https://web.dev/streams/#the-getreader-and-read-methods
-      const reader = data.getReader();
-      const decoder = new TextDecoder();
-      const parser = createParser(onParse);
-      let done = false;
-      while (!done) {
-        const { value, done: doneReading } = await reader.read();
-        done = doneReading;
-        const chunkValue = decoder.decode(value);
-        parser.feed(chunkValue);
-
-        if (done) {
-          setLoading(false);
-          setReviews((prevReview) => [
-            ...prevReview,
-            { review: stringData, reviewRequest },
-          ]);
-        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
-    }
 
-    return { error: null };
+      return { error: null };
+    });
   };
 
   return {
     screen,
     goBack,
     generateReview,
+    initiateGenerateReview,
     handleCopyToClipboard,
     selectReview,
     updateReview,
