@@ -1,6 +1,7 @@
 import { Store } from "@/entities/store";
 
 export const SAMPLE_STORE: Store = {
+  id: "1",
   name: "McDonald's",
   description: "",
   address: "",

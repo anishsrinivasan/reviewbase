@@ -8,6 +8,7 @@ export const reviewRequestSchema = z.object({
   location: z.string().min(1).max(50),
   comments: z.string().min(1).max(200).optional(),
   feel: z.array(z.string()).optional(),
+  storeId: z.string(),
 });
 
 export type ReviewRequestSchemaType = z.infer<typeof reviewRequestSchema>;

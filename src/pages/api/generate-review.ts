@@ -29,7 +29,7 @@ export default async function handler(req: Request) {
   // If the status is not 200 then it has been rate limited.
   if (res.status !== 200) {
     return failedEdgeResponse({
-      message: "Rate Limit Exceeded, Please try after sometime!",
+      message: "Rate Limit Exceeded, Please try after a minute!",
       statusCode: 429,
       code: API_RESPONSE_CODE.RATE_LIMIT,
     });

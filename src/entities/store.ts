@@ -17,6 +17,7 @@ export type StoreType = {
 };
 
 export type Store = {
+  id: string;
   name: string;
   description?: string;
   address?: string;

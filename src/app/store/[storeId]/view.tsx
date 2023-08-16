@@ -38,6 +38,7 @@ const StoreView: FC<Props> = ({ store }) => {
       }`,
       type: store.type.name,
       rating: rating,
+      storeId: store.id,
     };
 
     generateReview(payload);
