@@ -13,9 +13,9 @@ export const reviewRequestSchema = z.object({
         type: z.string(),
         promptText: z.string().optional(),
         isRequired: z.boolean(),
-        value: z.string().optional(),
-        label: z.string().optional(),
-        pattern: z.string().optional(),
+        value: z.string().optional().nullable(),
+        label: z.string().optional().nullable(),
+        pattern: z.string().optional().nullable(),
       })
     )
     .optional(),
