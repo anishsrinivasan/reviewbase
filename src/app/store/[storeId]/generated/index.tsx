@@ -8,6 +8,8 @@ import Back from "@/components/icon/back";
 import EditReview from "./editReview";
 import { useState } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { trackEvent } from "@/lib/analytics";
+import { EventName, EventKey } from "@/lib/analytics/events";
 
 type Props = {
   store: Store;
@@ -44,14 +46,23 @@ const Generated = ({
       return;
     }
 
+    trackEvent(EventName.EDIT_REVIEW_UPDATED, {
+      [EventKey.REVIEW]: review,
+    });
+
     updateReview(currentReview?.idx, review);
   };
 
   const handleEdit = (idx: number, review: TReview) => {
+    trackEvent(EventName.EDIT_REVIEW_CLICK, {
+      [EventKey.REVIEW]: review.review,
+    });
+
     setCurrentReview({ idx, review });
   };
 
   const dismissEdit = () => {
+    trackEvent(EventName.EDIT_REVIEW_DISMISSED);
     setCurrentReview(undefined);
   };
 

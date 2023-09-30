@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import {
   REVIEW_SCREENS,
@@ -15,6 +16,8 @@ import { useState, useRef } from "react";
 import useCopyToClipboard from "@/hooks/use-copy-to-clipboard";
 import { Store } from "@/entities/store";
 import { UseFormReturn } from "react-hook-form";
+import { trackDefaultAttributes, trackEvent } from "@/lib/analytics";
+import { EventName, EventKey } from "@/lib/analytics/events";
 
 const FALLBACK_ERROR_TEXT = "Something went wrong! Try Again!";
 
@@ -34,6 +37,14 @@ const useGenerateReview = ({
   const [selectedReview, setSelectedReview] = useState<TReview>();
   const [rating, setRating] = useState(5);
   const { toast } = useToast();
+
+  useEffect(() => {
+    trackDefaultAttributes({
+      [EventKey.STORE_ID]: store.id,
+      [EventKey.STORE_NAME]: store.name,
+      [EventKey.STORE_TYPE]: store.type.name,
+    });
+  }, []);
 
   const updateReview = (reviewIdx: number, review: string) => {
     const newReviews = reviews.map((reviewObj, idx) => {
@@ -80,9 +91,17 @@ const useGenerateReview = ({
     setSelectedReview(review);
     handleCopyToClipboard(review.review);
     setScreen(REVIEW_SCREENS.SHARE);
+
+    trackEvent(EventName.SHARE_REVIEW_CLICK, {
+      [EventKey.REVIEW]: review.review,
+    });
   };
 
   const handleCopyToClipboard = (text: string) => {
+    trackEvent(EventName.COPY_TO_CLIPBOARD, {
+      [EventKey.REVIEW]: text,
+    });
+
     copyToClipboard(text);
     toast({
       description: "The Review has been copied to clipboard.",
@@ -149,6 +168,11 @@ const useGenerateReview = ({
       setLoading(true);
       setScreen(REVIEW_SCREENS.GENERATED);
       scrollToEndSection(1000);
+
+      trackEvent(EventName.GENERATE_REVIEW, {
+        [EventKey.RATING]: reviewRequest.rating,
+      });
+
       let stringData = "";
 
       try {
@@ -209,6 +233,11 @@ const useGenerateReview = ({
               ...prevReview,
               { review: stringData, reviewRequest },
             ]);
+
+            trackEvent(EventName.GENERATION_SUCCESS, {
+              [EventKey.RATING]: reviewRequest.rating,
+              [EventKey.REVIEW]: stringData,
+            });
 
             resolve("");
           }
