@@ -87,26 +87,32 @@ const useGenerateReview = ({
   };
 
   const selectReview = (review: TReview) => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
     setSelectedReview(review);
-    handleCopyToClipboard(review.review);
+    handleCopyToClipboard(review.review, true);
     setScreen(REVIEW_SCREENS.SHARE);
+
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 400);
 
     trackEvent(EventName.SHARE_REVIEW_CLICK, {
       [EventKey.REVIEW]: review.review,
     });
   };
 
-  const handleCopyToClipboard = (text: string) => {
+  const handleCopyToClipboard = (text: string, skipToast = false) => {
     trackEvent(EventName.COPY_TO_CLIPBOARD, {
       [EventKey.REVIEW]: text,
     });
 
     copyToClipboard(text);
-    toast({
-      description: "The Review has been copied to clipboard.",
-      variant: "default",
-    });
+
+    if (!skipToast) {
+      toast({
+        description: "The Review has been copied to clipboard.",
+        variant: "default",
+      });
+    }
   };
 
   const initiateGenerateReview = async () => {

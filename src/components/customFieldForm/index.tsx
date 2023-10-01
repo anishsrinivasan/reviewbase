@@ -12,15 +12,16 @@ import { twMerge } from "tailwind-merge";
 
 type Props = {
   store: Store;
+  onSubmit?: () => void;
 };
 
-const CustomFieldForm = ({ store }: Props) => {
+const CustomFieldForm = ({ store, onSubmit = () => {} }: Props) => {
   const form = useFormContext();
   const formItemCN = "w-full mb-[20px] last:mb-[0px]";
 
   return (
     <Form {...form}>
-      <form className="w-full">
+      <form onSubmit={onSubmit} className="w-full">
         {store.customField?.map((fieldItem, idx) => {
           return (
             <FormField

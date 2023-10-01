@@ -41,7 +41,7 @@ const GenerateReview = ({
         </div>
         {store?.customField && store?.customField?.length > 0 ? (
           <div className="px-[20px] py-[20px] bg-[#101010]">
-            <CustomFieldForm store={store} />
+            <CustomFieldForm store={store} onSubmit={generateReview} />
           </div>
         ) : null}
         <div className="bg-[#000000] py-[20px] flex justify-center items-center">
