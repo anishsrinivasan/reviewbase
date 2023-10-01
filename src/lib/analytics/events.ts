@@ -6,6 +6,7 @@ export const EventName = {
   EDIT_REVIEW_UPDATED: "edit-review-updated",
   EDIT_REVIEW_DISMISSED: "edit-review-dismissed",
   SHARE_REVIEW_CLICK: "share-review-click",
+  SHARE_REVIEW_PLATFORM: "share-review-platform",
 } as const;
 
 export type EventName = (typeof EventName)[keyof typeof EventName];
@@ -16,6 +17,7 @@ export const EventKey = {
   STORE_TYPE: "store-type",
   REVIEW: "review",
   RATING: "rating",
+  PLATFORM: "platform",
 } as const;
 
 export type EventKey = (typeof EventKey)[keyof typeof EventKey];
