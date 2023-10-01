@@ -2,7 +2,6 @@ import StoreView from "./view";
 import { getStoreUsingId } from "@/services/store";
 import type { Metadata } from "next";
 
-export const runtime = 'edge'
 export const revalidate = 300;
 
 type Props = {
