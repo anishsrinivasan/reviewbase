@@ -2,7 +2,7 @@ import StoreView from "./view";
 import { getStoreUsingId } from "@/services/store";
 import type { Metadata } from "next";
 
-export const revalidate = 60 * 5;
+export const revalidate = 300;
 
 type Props = {
   params: { storeId: string };

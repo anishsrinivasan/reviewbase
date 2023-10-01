@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { FC, useState } from "react";
 import Image from "../image";
 import { twMerge } from "tailwind-merge";
@@ -22,7 +22,10 @@ const IconRating: FC<Props> = ({ value = 5 }) => {
   return (
     <div className="flex items-center justify-center w-full">
       <Image
-        className={twMerge("w-[140px] md:w-[160px]",isAnimating ? "pulsate" : "")}
+        className={twMerge(
+          "w-[140px] md:w-[160px]",
+          isAnimating ? "pulsate" : ""
+        )}
         alt={`Rating ${value}`}
         src={`/rating/${value}.png`}
         width={IMAGE_SIZE}
@@ -32,6 +35,19 @@ const IconRating: FC<Props> = ({ value = 5 }) => {
         }}
         priority
       />
+
+      {/* Preload Images */}
+      {[1, 2, 3, 4, 5].map((value) => (
+        <Image
+          key={value}
+          className={twMerge("w-[140px] md:w-[160px] hidden")}
+          alt={`Rating ${value}`}
+          src={`/rating/${value}.png`}
+          width={IMAGE_SIZE}
+          height={IMAGE_SIZE}
+        />
+      ))}
+      {/* Preload Images */}
     </div>
   );
 };

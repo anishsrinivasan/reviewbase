@@ -7,8 +7,8 @@ type Props = {
 };
 
 const LOGO_SIZES = {
-  width: 80,
-  height: 80,
+  width: 90,
+  height: 90,
 };
 
 const StoreHeader: FC<Props> = ({ store }) => {
@@ -17,7 +17,7 @@ const StoreHeader: FC<Props> = ({ store }) => {
       <div className="relative min-h-[130px] md:min-h-[160px]">
         <div
           className="absolute inset-0 z-10"
-          style={{ background: "rgb(0 0 0 / 50%)" }}
+          style={{ background: "rgb(0 0 0 / 40%)" }}
         />
         <div
           className="absolute inset-0 z-0"
@@ -33,7 +33,7 @@ const StoreHeader: FC<Props> = ({ store }) => {
         <div className="mt-[-50px] relative z-50 w-full">
           <div className="flex justify-center">
             <Image
-              className="rounded-full w-[80px] h-[80px] border-2"
+              className="rounded-full w-[90px] h-[90px] border-2 bg-[#101010]"
               alt={store.name}
               src={store.logoImage}
               width={LOGO_SIZES.width}
