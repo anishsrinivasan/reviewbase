@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import supabase from './supabaseClient'; 
-
+import supabase from '../pages/api/supabaseClient'; 
+/* use client */
 const Signup: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
