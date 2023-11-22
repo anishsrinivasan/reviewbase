@@ -6,29 +6,18 @@ type Props = {
   store: Store;
 };
 
-const HEADER_SIZES = {
-  width: "100%",
-  height: 160,
-};
-
 const LOGO_SIZES = {
-  width: 80,
-  height: 80,
+  width: 90,
+  height: 90,
 };
 
 const StoreHeader: FC<Props> = ({ store }) => {
   return (
     <div className="relative w-full">
-      <div
-        className="relative"
-        style={{
-          height: HEADER_SIZES.height,
-          width: HEADER_SIZES.width,
-        }}
-      >
+      <div className="relative min-h-[130px] md:min-h-[160px]">
         <div
           className="absolute inset-0 z-10"
-          style={{ background: "rgb(0 0 0 / 50%)" }}
+          style={{ background: "rgb(0 0 0 / 40%)" }}
         />
         <div
           className="absolute inset-0 z-0"
@@ -44,7 +33,7 @@ const StoreHeader: FC<Props> = ({ store }) => {
         <div className="mt-[-50px] relative z-50 w-full">
           <div className="flex justify-center">
             <Image
-              className="rounded-full border border-2"
+              className="rounded-full w-[90px] h-[90px] border-2 bg-[#101010]"
               alt={store.name}
               src={store.logoImage}
               width={LOGO_SIZES.width}

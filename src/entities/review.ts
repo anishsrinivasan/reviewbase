@@ -5,9 +5,24 @@ export const reviewRequestSchema = z.object({
   platform: z.string().min(1).max(50),
   type: z.string().min(1).max(50),
   rating: z.number().min(1).max(5),
+  customField: z
+    .array(
+      z.object({
+        name: z.string(),
+        placeholder: z.string().optional(),
+        type: z.string(),
+        promptText: z.string().optional(),
+        isRequired: z.boolean(),
+        value: z.string().optional().nullable(),
+        label: z.string().optional().nullable(),
+        pattern: z.string().optional().nullable(),
+      })
+    )
+    .optional(),
   location: z.string().min(1).max(50),
   comments: z.string().min(1).max(200).optional(),
   feel: z.array(z.string()).optional(),
+  storeId: z.string(),
 });
 
 export type ReviewRequestSchemaType = z.infer<typeof reviewRequestSchema>;

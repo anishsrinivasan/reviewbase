@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate:supabase":"npx supabase gen types typescript --project-id kjvapjhiqoinfmdofwtx --schema public > src/types/supabase.ts"
+    "generate:supabase": "npx supabase gen types typescript --project-id kjvapjhiqoinfmdofwtx --schema public > src/types/supabase.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.0",
@@ -30,8 +30,9 @@
     "eslint-config-next": "13.4.4",
     "eventsource-parser": "^1.0.0",
     "lucide-react": "^0.268.0",
-    "next": "13.4.4",
+    "next": "^13.5.3",
     "postcss": "8.4.23",
+    "posthog-js": "^1.81.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.44.1",

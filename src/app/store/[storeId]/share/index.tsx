@@ -1,10 +1,13 @@
 import StarRating from "@/components/star-rating";
-import { Store } from "@/entities/store";
+import { Platforms, Store } from "@/entities/store";
 import Back from "@/components/icon/back";
 import IconRating from "@/components/icon-rating";
 import ShareSection from "@/components/share-section";
 import { Button } from "@/components/ui/button";
 import { REVIEW_SCREENS, TReview } from "@/entities/review";
+import { CopyIcon } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
+import { EventKey, EventName } from "@/lib/analytics/events";
 
 type Props = {
   store: Store;
@@ -26,11 +29,28 @@ const Share = ({
       return;
     }
 
+    trackEvent(EventName.COPY_TO_CLIPBOARD, {
+      [EventKey.REVIEW]: selectedReview.review,
+      [EventKey.RATING]: rating,
+    });
+
     handleCopyToClipboard(selectedReview.review);
   };
 
   const handleGoBack = () => {
     goBack(REVIEW_SCREENS.GENERATED);
+  };
+
+  const handleShareClick = (platform: Platforms) => {
+    if (!selectedReview) {
+      return;
+    }
+
+    trackEvent(EventName.SHARE_REVIEW_PLATFORM, {
+      [EventKey.REVIEW]: selectedReview.review,
+      [EventKey.RATING]: rating,
+      [EventKey.PLATFORM]: platform,
+    });
   };
 
   return (
@@ -53,7 +73,7 @@ const Share = ({
 
       <div className="mt-[40px] min-h-screen">
         <div className="w-full">
-          <div className="mb-[30px]">
+          <div className="mb-[20px]">
             <IconRating value={rating} />
           </div>
           <div className="px-[20px]">
@@ -63,18 +83,27 @@ const Share = ({
             <p className="text-center text-[14px] md:text-[18px] mb-[20px]">
               Your Review has been copied to clipboard.
               <br />
-              Please post your review to the {`store's`} social platforms.
+              Please go to the {`store's`} social platforms using the below
+              links and paste your review so that you can post.
             </p>
           </div>
 
+          <div className="px-[20px]">
+            <ShareSection store={store} onShareClick={handleShareClick} />
+          </div>
+
           <div className="flex flex-col items-center justify-center">
-            <Button onClick={copyReview}>Copy Review</Button>
+            <Button
+              className="rounded-full flex justify-center py-[0px] px-[20px] w-[250px]"
+              onClick={copyReview}
+            >
+              <div className="flex items-center w-[30px] h-[30px] md:w-[40px] md:h-[40px] mr-4">
+                <CopyIcon />
+              </div>
+              Copy Review
+            </Button>
           </div>
         </div>
-      </div>
-
-      <div className="sticky z-10 bottom-0 w-full">
-        <ShareSection store={store} />
       </div>
     </div>
   );

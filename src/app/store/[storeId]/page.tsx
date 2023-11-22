@@ -1,16 +1,15 @@
 import StoreView from "./view";
 import { getStoreUsingId } from "@/services/store";
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
+
+export const revalidate = 300;
 
 type Props = {
   params: { storeId: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata(
-  { params }: Props,
-  parent?: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const storeId = params.storeId;
 
   const response = await getStoreUsingId(storeId);
